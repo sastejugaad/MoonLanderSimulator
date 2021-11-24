@@ -5,3 +5,9 @@ over wifi. On the other hand, we have our mission control center which is a prog
 The Control center filters this data and applies some maths to draw graphs and generate the rotation angles for the 3D model which represents the real state of the physical model.
 This project was designed for beginners and is extremely user-friendly. The whole project is open source and only costs Rs.1200. More updates like object recognition and terrain mapping using the
 the camera will be added soon.
+Cad files:
+https://grabcad.com/library/vikram-moon-lander-chandrayaan-3-1
+video:
+https://youtu.be/i1RNAJk-2xY
+
+Currently i am wiring the article will update here in few days.
