@@ -1,3 +1,4 @@
+//Please install following libraries before running this program
 
 #define CAMERA_MODEL_AI_THINKER
 #include <WiFi.h>
@@ -29,13 +30,14 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 
 // WiFi network name and password:
+//Change this to connect to your wifi router
 const char * networkName = "Askey5100-02B0";
 const char * networkPswd = "HHLUnKLKQW";
 
 //IP address to send UDP data to:
 // either use the ip address of the server or 
 // a network broadcast address
-const char * udpAddress = "192.168.1.197";
+const char * udpAddress = "192.168.1.197"; //Ip address of the lander change this to your address
 const int udpPort = 6000;
 
 //Are we currently connected?
@@ -44,6 +46,7 @@ boolean connected = false;
 //The udp library class
 WiFiUDP udp;
 MPU6050 mpu6050(Wire);
+//Draws image on the screen
 const unsigned char myBitmap [] PROGMEM = {
   // 'ROCKET FLIGHT Computer (2), 128x64px
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
@@ -115,7 +118,7 @@ const unsigned char myBitmap [] PROGMEM = {
 void setup() {
     Wire.begin(14,15); // Change here the i2c pins address
     Serial.begin(115200);
-    WiFi.softAP("ESP32", "12345678");
+    WiFi.softAP("ESP32", "12345678");// Lander hotspot SSID and password
     camera.begin(FRAMESIZE_QVGA, PIXFORMAT_JPEG);
     server.start();
     if(!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) 
@@ -145,8 +148,8 @@ void setup() {
 
 void loop() {  
 mpu6050.update();
-
-      float yaw = mpu6050.getAngleY();
+    
+    float yaw = mpu6050.getAngleY();
     float roll = mpu6050.getAngleZ();
     float pitch = mpu6050.getAngleX();
     float temperature = mpu6050.getTemp();
@@ -154,13 +157,14 @@ mpu6050.update();
     float AccY = mpu6050.getAccY();
     float AccZ = mpu6050.getAccZ();
     udp.beginPacket(udpAddress,udpPort);
-    udp.printf("%f,%f,%f,%f,%f,%f,%f",AccX,AccY,AccZ,temperature,yaw,roll,pitch);
+    udp.printf("%f,%f,%f,%f,%f,%f,%f",AccX,AccY,AccZ,temperature,yaw,roll,pitch);// Sends the data over wifi
     const uint8_t* buffer = (uint8_t*)
    //   uint8_t[60] buffer = {};
     udp.endPacket();  
     
 }
   void connectToWiFi(const char * ssid, const char * pwd){
+  //Connects to the wifi router.
   Serial.println("Connecting to WiFi network: " + String(ssid));
   WiFi.disconnect(true); // delete old config 
   WiFi.onEvent(WiFiEvent);//register event handler
@@ -203,6 +207,7 @@ void WiFiEvent(WiFiEvent_t event)
 
 void disp_text(String text,int txt_size,int px,int py,int clear_scrn)
 {
+ //Small function to help display text on the oled screen.
  if(clear_scrn == 1)
  {
  display.clearDisplay();// clear screen
